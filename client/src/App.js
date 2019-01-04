@@ -40,7 +40,10 @@ class App extends Component {
         <Mutation mutation={CREATE_USER} update={(cache, {data}) =>{
           console.log(data);
         }} 
-        onCompleted={data => console.log(data)}>
+        onCompleted={data => {
+          console.log(data)
+          localStorage.setItem('AUTH_TOKEN', data.signup);
+        }}>
         {createUserLink => 
           <form onSubmit={e => {
             e.preventDefault();
