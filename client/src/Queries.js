@@ -5,3 +5,9 @@ export const PEOPLE = gql`query QueryPeople($id: ID!){
     name
   }
 }`;
+
+export const MESSAGES = gql`{
+  messages{
+    text
+  }
+}`;

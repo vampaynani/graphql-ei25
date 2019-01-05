@@ -1,26 +1,30 @@
-const { GraphQLServer } = require('graphql-yoga');
+const { GraphQLServer, PubSub } = require('graphql-yoga');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const typeDefs = './schema.graphql';
 const Query = require('./resolvers/query');
 const Mutation = require('./resolvers/mutation');
-
+const Subscription = require('./resolvers/subscription');
 const Person = require('./resolvers/Person');
 const Date = require('./resolvers/Date');
 
 const resolvers = {
   Query,
   Mutation,
+  Subscription,
   Person,
   Date
 };
 
+
+const pubsub = new PubSub();
 const server = new GraphQLServer({
   typeDefs,
   resolvers,
   context: rawRequest => ({
     rawRequest,
+    pubsub,
     isAuthorized: () => {
       const AuthHeader = rawRequest.request.header('authorization');
       if(!AuthHeader){

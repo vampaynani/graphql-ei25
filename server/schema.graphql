@@ -2,11 +2,21 @@ scalar Date
 
 type Query {
   people(id: ID!): Person
+  messages: [Message]
 }
 
 type Mutation {
   signup(email: String!, password: String!): String!
   login(email: String!, password: String!): String!
+  createMessage(message: String!): Message! 
+}
+
+type Subscription {
+  newMessage: Message!
+}
+
+type Message {
+  text: String
 }
 
 type Person {

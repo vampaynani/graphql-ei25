@@ -1,5 +1,5 @@
-const axios = require('axios');
 const User = require('../../models/user');
+const Message = require('../../models/message');
 
 module.exports = async (root, args, context) => {
   const { isAuthorized } = context;
@@ -8,8 +8,5 @@ module.exports = async (root, args, context) => {
   if(!isUser){
     throw 'Unauthorized';
   }
-  return await axios.get(`https://swapi.co/api/people/${args.id}`)
-  .then(response => {
-    return response.data;
-  });
+  return await Message.find();
 }

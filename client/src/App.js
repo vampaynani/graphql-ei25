@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
-import { Query, Mutation } from 'react-apollo';
-import { PEOPLE } from './Queries';
-import { CREATE_USER } from './Mutations';
+import Register from './components/Register';
+import People from './components/People';
+import Messages from './components/Messages';
+import { Login } from './components/Login';
 
 class App extends Component {
   constructor(props){
@@ -37,37 +39,22 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <Mutation mutation={CREATE_USER} update={(cache, {data}) =>{
-          console.log(data);
-        }} 
-        onCompleted={data => {
-          console.log(data)
-          localStorage.setItem('AUTH_TOKEN', data.signup);
-        }}>
-        {createUserLink => 
-          <form onSubmit={e => {
-            e.preventDefault();
-            createUserLink({variables: {email: e.currentTarget.email.value, password: e.currentTarget.password.value}});
-          }}>
-            <label>
-              <input type="text" name="email" />
-            </label>
-            <label>
-              <input type="password" name="password" />
-            </label>
-            <button>Create User</button>
-          </form>
-        }
-        </Mutation>
-        <Query query={PEOPLE} variables={{id: 3}}>
-        {({loading, error, data}) => {
-          if(loading) return <div>Loading...</div>
-          if(error) return <div>Error {error}</div>
-          return <div>
-            <p>{data.people.name}</p>
-          </div>
-        }}
-        </Query>
+        <Router>
+          <main>
+            <nav>
+              <ul>
+                <li><Link to="/register">Register</Link></li>
+                <li><Link to="/login">Login</Link></li>
+                <li><Link to="/people">People</Link></li>
+                <li><Link to="/messages">Messages</Link></li>
+              </ul>
+            </nav>
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/people" component={People} />
+            <Route exact path="/messages" component={Messages} />
+          </main>
+        </Router>
       </div>
     );
   }
